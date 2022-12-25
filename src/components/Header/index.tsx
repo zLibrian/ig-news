@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { SignInButton } from '../SignInButton';
 
 import styles from './page.module.scss';
 
@@ -14,8 +15,8 @@ export function Header() {
           </Link>
           <Link href="/posts">Post</Link>
         </nav>
+        <SignInButton />
       </div>
-      <button type="button">Sign in with GitHub</button>
     </header>
   );
 }

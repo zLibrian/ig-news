@@ -1,10 +1,6 @@
 .headerContainer {
-  display: flex;
-  justify-content: space-between;
-  
   height: 5rem;
   margin: 0 auto;
-  
   border-bottom: 1px solid var(--gray-800);
 }
 
@@ -21,6 +17,7 @@
     height: 5rem;
 
     a {
+      font-size: 1.1rem;
       display: inline-block;
       padding: 0 0.5rem;
       color: var(--gray-300);
@@ -39,7 +36,7 @@
 
       &.active {
         color: var(--gray-100);
-        font-weight: 700;
+        font-weight: bold;
       }
 
       &.active::after {
@@ -53,5 +50,9 @@
         background-color: var(--yellow-500);
       }
     }
+  }
+
+  button {
+    margin-left: auto;
   }
 }
