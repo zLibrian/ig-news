@@ -1,1 +1,38 @@
-.main {}
+.heroContainer {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1120px;
+  height: calc(100vh - 5rem);  
+}
+
+section.heroContent {
+  padding: 4rem 0;
+
+  h2 {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+  }
+  span {
+    font-weight: bold;
+    color: #61DCFB;
+  }
+  p {
+    font-size: 1.5rem;
+    font-weight: 400;
+  }
+
+  button {
+    background: var(--yellow-500);
+    color: var(--gray-900);
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 1rem 3rem;
+    border-radius: 3rem;
+    border: 0;
+    transition: filter 0.2s;
+    margin-top: 1.5rem;
+
+  }
+}
