@@ -2,7 +2,17 @@ import Image from 'next/image';
 import { SubscribeButton } from '../components/SubscribeButton';
 import styles from './page.module.scss';
 
-export default function Home() {
+const getData = async () => {
+  const response = await fetch('https://rickandmortyapi.com/api/character', {
+    next: { revalidate: 60 * 60 * 24 },
+  });
+  const data = await response.json();
+  return data;
+};
+
+export default async function Home() {
+  const data = await getData();
+  console.log(data);
   return (
     <main className={styles.heroContainer}>
       <section className={styles.heroContent}>
