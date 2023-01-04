@@ -1,18 +1,27 @@
 import Image from 'next/image';
 import { SubscribeButton } from '../components/SubscribeButton';
+import { stripe } from '../services/stripe';
 import styles from './page.module.scss';
 
-const getData = async () => {
-  const response = await fetch('https://rickandmortyapi.com/api/character', {
-    next: { revalidate: 60 * 60 * 24 },
+const getProductIdAndAmount = async () => {
+  const price = await stripe.prices.retrieve('price_1MJOc5D88dJm5CJ9wMQkyLV6', {
+    expand: ['product'],
   });
-  const data = await response.json();
-  return data;
+
+  const product = {
+    productId: price.id,
+    amount: new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format((price.unit_amount || 0) / 100),
+  };
+
+  return product;
 };
 
 export default async function Home() {
-  const data = await getData();
-  console.log(data);
+  const product = await getProductIdAndAmount();
+
   return (
     <main className={styles.heroContainer}>
       <section className={styles.heroContent}>
@@ -23,9 +32,9 @@ export default async function Home() {
         </h2>
         <p>
           Get access to all the publications <br />
-          <span>for {`$9.90`} month</span>
+          <span>for {product.amount} month</span>
         </p>
-        <SubscribeButton />
+        <SubscribeButton priceId={product.productId} />
       </section>
       <Image
         src="/images/avatar.svg"
