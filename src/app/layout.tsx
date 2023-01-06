@@ -1,5 +1,6 @@
 // import { Roboto } from '@next/font/google';
 import { Header } from '../components/Header';
+import NextAuthProvider from '../Context/NextAuthProvider';
 import '../styles/globals.scss';
 
 // const roboto = Roboto({
@@ -16,8 +17,10 @@ export default function RootLayout({
     <html lang="en">
       <head />
       <body>
-        <Header />
-        {children}
+        <NextAuthProvider>
+          <Header />
+          {children}
+        </NextAuthProvider>
       </body>
     </html>
   );
