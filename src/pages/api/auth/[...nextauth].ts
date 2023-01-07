@@ -19,13 +19,29 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async signIn(data) {
       await Fauna.query(
-        q.Create(q.Collection('users'), {
-          data: {
-            email: data.user.email,
-            name: data.user.name,
-            image: data.user.image,
-          },
-        })
+        q.If(
+          q.Not(
+            q.Exists(
+              q.Match(
+                q.Index('user_by_email'),
+                q.Casefold(data.user.email as string)
+              )
+            )
+          ),
+          q.Create(q.Collection('users'), {
+            data: {
+              email: data.user.email,
+              name: data.user.name,
+              image: data.user.image,
+            },
+          }),
+          q.Get(
+            q.Match(
+              q.Index('user_by_email'),
+              q.Casefold(data.user.email as string)
+            )
+          )
+        )
       );
       return true;
     },
