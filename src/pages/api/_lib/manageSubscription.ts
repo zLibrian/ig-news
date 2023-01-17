@@ -5,6 +5,7 @@ import { stripe } from '../../../services/stripe';
 type ManageSubscriptionProps = {
   subscriptionId: string;
   customerId: string;
+  createAction: boolean;
 };
 
 export async function saveSubscription(props: ManageSubscriptionProps) {
@@ -26,21 +27,19 @@ export async function saveSubscription(props: ManageSubscriptionProps) {
     priceId: subscription.items.data[0].price.id,
   };
 
-  await Fauna.query(
-    q.If(
-      q.Not(
-        q.Exists(
-          q.Match(q.Index('user_by_stripe_customer_id'), subscription.id)
-        )
-      ),
-      q.Create(q.Collection('subscriptions'), { data: subscriptionData }),
+  if (props.createAction) {
+    await Fauna.query(
+      q.Create(q.Collection('subscriptions'), { data: subscriptionData })
+    );
+  } else {
+    await Fauna.query(
       q.Replace(
         q.Select(
           'ref',
-          q.Get(q.Match(q.Index('user_by_stripe_customer_id'), subscription.id))
+          q.Get(q.Match(q.Index('subscription_by_id'), props.subscriptionId))
         ),
         { data: subscriptionData }
       )
-    )
-  );
+    );
+  }
 }
